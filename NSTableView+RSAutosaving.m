@@ -30,10 +30,9 @@ NSString* kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 {
 	NSMutableDictionary* autoDict = [NSMutableDictionary dictionary];
 	
-	// Enumerate our columns and save width by column identifier
-	NSEnumerator* colEnum = [[self tableColumns] objectEnumerator];
+	// Loop over our columns and save width by column identifier
 	NSTableColumn* thisCol;
-	while (thisCol = [colEnum nextObject])
+	for (thisCol in [self tableColumns])
 	{
 		NSMutableDictionary* thisColDict = [NSMutableDictionary dictionary];
 		NSString* thisColID = [thisCol identifier];
@@ -61,9 +60,8 @@ NSString* kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 	NSArray* sortedColumnKeys = [theDict keysSortedByValueUsingSelector:@selector(compareByAutosavedIndex:)];
 		
 	// Set widths and index to saved values
-	NSEnumerator* idEnum = [sortedColumnKeys objectEnumerator];
 	NSString* thisIdentifier;
-	while (thisIdentifier = [idEnum nextObject])
+	for (thisIdentifier in sortedColumnKeys)
 	{
 		NSDictionary* thisColDict = [theDict objectForKey:thisIdentifier];
 
