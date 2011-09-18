@@ -91,31 +91,25 @@ NSString* kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 @implementation NSTableColumn (RSTableViewAutosaving)
 
 // We implement a 1-stop wrapper for setResizingMask and setResizable as appropriate 
-// for the version of Mac OS X we are being run against.
+// for the version of Mac OS X we are being built against.
 
 - (int) safeResizingMask
 {
 	// 10.4 and later has "resizingMask". Earlier than that just pretend like the resizable BOOL is a mask
-	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_3)
-	{
-		return [self resizingMask];
-	}
-	else
-	{
-		return [self isResizable];
-	}
+#if (MAC_OS_X_VERSION_MIN_REQUIRED >= 1040)
+	return [self resizingMask];
+#else
+	return [self isResizable];
+#endif
 }
 
 - (void) setSafeResizingMask:(int) maskOrBOOL
 {
-	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_3)	// NSAppKitVersionNumber10_2_3
-	{
-		[self setResizingMask:maskOrBOOL];
-	}
-	else
-	{
-		[self setResizable:maskOrBOOL];
-	}	
+#if (MAC_OS_X_VERSION_MIN_REQUIRED >= 1040)
+	[self setResizingMask:maskOrBOOL];
+#else
+	[self setResizable:maskOrBOOL];
+#endif
 }
 
 @end
