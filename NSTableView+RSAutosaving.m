@@ -16,8 +16,8 @@ NSString* kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 // We implement some methods on other classes as part of the private implementation.
 // These are near the end of this file.
 @interface NSTableColumn (RSTableViewAutosaving)
-- (int) safeResizingMask;
-- (void) setSafeResizingMask:(int) maskOrBOOL;
+- (NSInteger) safeResizingMask;
+- (void) setSafeResizingMask:(NSInteger) maskOrBOOL;
 @end
 
 @interface NSDictionary (RSTableViewAutosaving)
@@ -38,11 +38,11 @@ NSString* kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 		NSString* thisColID = [thisCol identifier];
 		
 		// Save width
-		NSNumber* thisWidth = [NSNumber numberWithFloat:[thisCol width]];
+		NSNumber* thisWidth = [NSNumber numberWithDouble:[thisCol width]];
 		[thisColDict setObject:thisWidth forKey:kAutosavedColumnWidthKey];
 		
 		// Save index
-		NSNumber* thisIndex = [NSNumber numberWithInt:[self columnWithIdentifier:[thisCol identifier]]];
+		NSNumber* thisIndex = [NSNumber numberWithInteger:[self columnWithIdentifier:[thisCol identifier]]];
 		[thisColDict setObject:thisIndex forKey:kAutosavedColumnIndexKey];
 
 		// Add it all to the big dict
@@ -66,8 +66,8 @@ NSString* kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 		NSDictionary* thisColDict = [theDict objectForKey:thisIdentifier];
 
 		// Ensure proper column location
-		int currentIndex = [self columnWithIdentifier:thisIdentifier];
-		int desiredIndex = [[thisColDict objectForKey:kAutosavedColumnIndexKey] intValue];
+		NSInteger currentIndex = [self columnWithIdentifier:thisIdentifier];
+		NSInteger desiredIndex = [[thisColDict objectForKey:kAutosavedColumnIndexKey] integerValue];
 		[self moveColumn:currentIndex toColumn:desiredIndex];
 		
 		// And adjust the width
@@ -76,9 +76,9 @@ NSString* kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 		{
 			// Disable autosizing magic, because it interferes with our noble efforts
 			// to set the width to a darned specific value.
-			int saveMask = [thisCol safeResizingMask];		
+			NSInteger saveMask = [thisCol safeResizingMask];		
 			[thisCol setSafeResizingMask:0];
-			[thisCol setWidth:[[thisColDict objectForKey:kAutosavedColumnWidthKey] floatValue]];
+			[thisCol setWidth:(CGFloat)[[thisColDict objectForKey:kAutosavedColumnWidthKey] doubleValue]];
 			[thisCol setSafeResizingMask:saveMask];
 		}
 	}
@@ -91,7 +91,7 @@ NSString* kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 // We implement a 1-stop wrapper for setResizingMask and setResizable as appropriate 
 // for the version of Mac OS X we are being built against.
 
-- (int) safeResizingMask
+- (NSInteger) safeResizingMask
 {
 	// 10.4 and later has "resizingMask". Earlier than that just pretend like the resizable BOOL is a mask
 #if (MAC_OS_X_VERSION_MIN_REQUIRED >= 1040)
@@ -101,7 +101,7 @@ NSString* kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 #endif
 }
 
-- (void) setSafeResizingMask:(int) maskOrBOOL
+- (void) setSafeResizingMask:(NSInteger) maskOrBOOL
 {
 #if (MAC_OS_X_VERSION_MIN_REQUIRED >= 1040)
 	[self setResizingMask:maskOrBOOL];
