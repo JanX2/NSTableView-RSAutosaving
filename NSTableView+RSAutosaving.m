@@ -68,7 +68,9 @@ NSString* kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 		// Ensure proper column location
 		NSInteger currentIndex = [self columnWithIdentifier:thisIdentifier];
 		NSInteger desiredIndex = [[thisColDict objectForKey:kAutosavedColumnIndexKey] integerValue];
-		[self moveColumn:currentIndex toColumn:desiredIndex];
+		if (currentIndex != -1 && desiredIndex != -1) {
+			[self moveColumn:currentIndex toColumn:desiredIndex];
+		}
 		
 		// And adjust the width
 		NSTableColumn* thisCol = [self tableColumnWithIdentifier:thisIdentifier];
