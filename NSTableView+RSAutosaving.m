@@ -70,7 +70,10 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 		// Ensure proper column location
 		NSInteger currentIndex = [self columnWithIdentifier:thisIdentifier];
 		NSInteger desiredIndex = [storedIndexNum integerValue];
-		if ((storedIndexNum != nil) && (currentIndex != -1) && (desiredIndex != -1) && (NSLocationInRange(desiredIndex, columnIndexRange))) {
+		if ((storedIndexNum != nil) &&
+			(currentIndex != -1) &&
+			(desiredIndex != -1) &&
+			(NSLocationInRange(desiredIndex, columnIndexRange))) {
 			[self moveColumn:currentIndex toColumn:desiredIndex];
 		}
 		
