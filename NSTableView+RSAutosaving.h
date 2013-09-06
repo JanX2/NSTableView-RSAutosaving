@@ -12,6 +12,6 @@
 
 
 @interface NSTableView (RSAutosaving)
-- (NSDictionary *) dictionaryForAutosavingLayout;
-- (void) adjustLayoutForAutosavedDictionary:(NSDictionary*)theDict;
+- (NSDictionary *)dictionaryForAutosavingLayout;
+- (void)adjustLayoutForAutosavedDictionary:(NSDictionary *)theDict;
 @end
