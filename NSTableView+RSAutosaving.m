@@ -62,22 +62,24 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 	NSString *thisIdentifier;
 	for (thisIdentifier in sortedColumnKeys) {
 		NSDictionary *thisColDict = [theDict objectForKey:thisIdentifier];
+		NSNumber *storedIndexNum = [thisColDict objectForKey:kAutosavedColumnIndexKey];
+		NSNumber *columnWidthNum = [thisColDict objectForKey:kAutosavedColumnWidthKey];
 		
 		// Ensure proper column location
 		NSInteger currentIndex = [self columnWithIdentifier:thisIdentifier];
-		NSInteger desiredIndex = [[thisColDict objectForKey:kAutosavedColumnIndexKey] integerValue];
-		if ((currentIndex != -1) && (desiredIndex != -1)) {
+		NSInteger desiredIndex = [storedIndexNum integerValue];
+		if ((storedIndexNum != nil) && (currentIndex != -1) && (desiredIndex != -1)) {
 			[self moveColumn:currentIndex toColumn:desiredIndex];
 		}
 		
 		// And adjust the width
 		NSTableColumn *thisCol = [self tableColumnWithIdentifier:thisIdentifier];
-		if (thisCol != nil) {
+		if ((columnWidthNum != nil) && (thisCol != nil)) {
 			// Disable autosizing magic, because it interferes with our noble efforts
 			// to set the width to a darned specific value.
 			NSInteger saveMask = [thisCol safeResizingMask];
 			[thisCol setSafeResizingMask:0];
-			[thisCol setWidth:(CGFloat)[[thisColDict objectForKey:kAutosavedColumnWidthKey] doubleValue]];
+			[thisCol setWidth:(CGFloat)[columnWidthNum doubleValue]];
 			[thisCol setSafeResizingMask:saveMask];
 		}
 	}
