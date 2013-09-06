@@ -58,6 +58,8 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 	// the order of indices. So let's get an ordering of our keys by column index.
 	NSArray *sortedColumnKeys = [theDict keysSortedByValueUsingSelector:@selector(compareByAutosavedIndex:)];
 	
+	NSRange columnIndexRange = NSMakeRange(0, self.numberOfColumns);
+	
 	// Set widths and index to saved values
 	NSString *thisIdentifier;
 	for (thisIdentifier in sortedColumnKeys) {
@@ -68,7 +70,7 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 		// Ensure proper column location
 		NSInteger currentIndex = [self columnWithIdentifier:thisIdentifier];
 		NSInteger desiredIndex = [storedIndexNum integerValue];
-		if ((storedIndexNum != nil) && (currentIndex != -1) && (desiredIndex != -1)) {
+		if ((storedIndexNum != nil) && (currentIndex != -1) && (desiredIndex != -1) && (NSLocationInRange(desiredIndex, columnIndexRange))) {
 			[self moveColumn:currentIndex toColumn:desiredIndex];
 		}
 		
