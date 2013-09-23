@@ -37,15 +37,16 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 		NSString *thisColID = [thisCol identifier];
 		
 		// Save width
-		NSNumber *thisWidth = [NSNumber numberWithDouble:[thisCol width]];
-		[thisColDict setObject:thisWidth forKey:kAutosavedColumnWidthKey];
+		NSNumber *thisWidth = @(thisCol.width);
+		thisColDict[kAutosavedColumnWidthKey] = thisWidth;
 		
 		// Save index
-		NSNumber *thisIndex = [NSNumber numberWithInteger:[self columnWithIdentifier:[thisCol identifier]]];
-		[thisColDict setObject:thisIndex forKey:kAutosavedColumnIndexKey];
+		NSInteger thisColIndex = [self columnWithIdentifier:thisColID];
+		NSNumber *thisIndex = @(thisColIndex);
+		thisColDict[kAutosavedColumnIndexKey] = thisIndex;
 		
 		// Add it all to the big dict
-		[autoDict setObject:thisColDict forKey:thisColID];
+		autoDict[thisColID] = thisColDict;
 	}
 	
 	return autoDict;
@@ -63,9 +64,9 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 	// Set widths and index to saved values
 	NSString *thisIdentifier;
 	for (thisIdentifier in sortedColumnKeys) {
-		NSDictionary *thisColDict = [theDict objectForKey:thisIdentifier];
-		NSNumber *storedIndexNum = [thisColDict objectForKey:kAutosavedColumnIndexKey];
-		NSNumber *columnWidthNum = [thisColDict objectForKey:kAutosavedColumnWidthKey];
+		NSDictionary *thisColDict = theDict[thisIdentifier];
+		NSNumber *storedIndexNum = thisColDict[kAutosavedColumnIndexKey];
+		NSNumber *columnWidthNum = thisColDict[kAutosavedColumnWidthKey];
 		
 		// Ensure proper column location
 		NSInteger currentIndex = [self columnWithIdentifier:thisIdentifier];
@@ -125,8 +126,8 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 
 - (NSComparisonResult)compareByAutosavedIndex:(NSDictionary *)otherDict
 {
-	NSNumber *myIndex = [self objectForKey:kAutosavedColumnIndexKey];
-	NSNumber *otherIndex = [otherDict objectForKey:kAutosavedColumnIndexKey];
+	NSNumber *myIndex = self[kAutosavedColumnIndexKey];
+	NSNumber *otherIndex = otherDict[kAutosavedColumnIndexKey];
 	return [myIndex compare:otherIndex];
 }
 
