@@ -88,9 +88,9 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 			NSInteger saveMask = thisCol.resizingMask;
 			thisCol.resizingMask = 0;
 #ifdef JXZOOMABLE_ENABLED
-			thisCol.unzoomedWidth = (CGFloat)[columnWidthNum doubleValue];
+			thisCol.unzoomedWidth = (CGFloat)columnWidthNum.doubleValue;
 #else
-			thisCol.width = (CGFloat)[columnWidthNum doubleValue];
+			thisCol.width = (CGFloat)columnWidthNum.doubleValue;
 #endif
 			thisCol.resizingMask = saveMask;
 		}
