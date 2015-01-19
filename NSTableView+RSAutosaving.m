@@ -76,7 +76,7 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 		if ((columnWidthNum != nil) && (thisCol != nil)) {
 			// Disable autosizing magic, because it interferes with our noble efforts
 			// to set the width to a darned specific value.
-			NSInteger saveMask = [thisCol resizingMask];
+			NSInteger saveMask = thisCol.resizingMask;
 			thisCol.resizingMask = 0;
 			thisCol.width = (CGFloat)[columnWidthNum doubleValue];
 			thisCol.resizingMask = saveMask;
