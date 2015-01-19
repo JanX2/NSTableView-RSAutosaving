@@ -13,13 +13,6 @@
 NSString *kAutosavedColumnWidthKey = @"AutosavedColumnWidth";
 NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 
-// We implement some methods on other classes as part of the private implementation.
-// These are near the end of this file.
-@interface NSTableColumn (RSTableViewAutosaving)
-- (NSInteger)safeResizingMask;
-- (void)setSafeResizingMask:(NSInteger)maskOrBOOL;
-@end
-
 @interface NSDictionary (RSTableViewAutosaving)
 - (NSComparisonResult)compareByAutosavedIndex:(NSDictionary *)otherDict;
 @end
@@ -83,41 +76,16 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 		if ((columnWidthNum != nil) && (thisCol != nil)) {
 			// Disable autosizing magic, because it interferes with our noble efforts
 			// to set the width to a darned specific value.
-			NSInteger saveMask = [thisCol safeResizingMask];
-			thisCol.safeResizingMask = 0;
+			NSInteger saveMask = [thisCol resizingMask];
+			thisCol.resizingMask = 0;
 			thisCol.width = (CGFloat)[columnWidthNum doubleValue];
-			thisCol.safeResizingMask = saveMask;
+			thisCol.resizingMask = saveMask;
 		}
 	}
 }
 
 @end
 
-@implementation NSTableColumn (RSTableViewAutosaving)
-
-// We implement a 1-stop wrapper for setResizingMask and setResizable as appropriate
-// for the version of Mac OS X we are being built against.
-
-- (NSInteger)safeResizingMask
-{
-	// 10.4 and later has "resizingMask". Earlier than that just pretend like the resizable BOOL is a mask
-#if (MAC_OS_X_VERSION_MIN_REQUIRED >= 1040)
-	return [self resizingMask];
-#else
-	return [self isResizable];
-#endif
-}
-
-- (void)setSafeResizingMask:(NSInteger)maskOrBOOL
-{
-#if (MAC_OS_X_VERSION_MIN_REQUIRED >= 1040)
-	[self setResizingMask:maskOrBOOL];
-#else
-	[self setResizable:maskOrBOOL];
-#endif
-}
-
-@end
 
 @implementation NSDictionary (RSTableViewAutosaving)
 
