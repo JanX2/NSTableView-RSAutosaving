@@ -10,6 +10,11 @@
 
 #import "NSTableView+RSAutosaving.h"
 
+#if __has_include("NSTableColumn+JXZoomable.h")
+#	import "NSTableColumn+JXZoomable.h"
+#	define JXZOOMABLE_ENABLED	1
+#endif
+
 NSString *kAutosavedColumnWidthKey = @"AutosavedColumnWidth";
 NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 
@@ -30,7 +35,11 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 		NSString *thisColID = [thisCol identifier];
 		
 		// Save width
+#ifdef JXZOOMABLE_ENABLED
+		NSNumber *thisWidth = @(thisCol.unzoomedWidth);
+#else
 		NSNumber *thisWidth = @(thisCol.width);
+#endif
 		thisColDict[kAutosavedColumnWidthKey] = thisWidth;
 		
 		// Save index
@@ -78,7 +87,11 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 			// to set the width to a darned specific value.
 			NSInteger saveMask = thisCol.resizingMask;
 			thisCol.resizingMask = 0;
+#ifdef JXZOOMABLE_ENABLED
+			thisCol.unzoomedWidth = (CGFloat)[columnWidthNum doubleValue];
+#else
 			thisCol.width = (CGFloat)[columnWidthNum doubleValue];
+#endif
 			thisCol.resizingMask = saveMask;
 		}
 	}
