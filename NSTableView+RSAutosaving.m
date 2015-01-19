@@ -84,9 +84,9 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 			// Disable autosizing magic, because it interferes with our noble efforts
 			// to set the width to a darned specific value.
 			NSInteger saveMask = [thisCol safeResizingMask];
-			[thisCol setSafeResizingMask:0];
-			[thisCol setWidth:(CGFloat)[columnWidthNum doubleValue]];
-			[thisCol setSafeResizingMask:saveMask];
+			thisCol.safeResizingMask = 0;
+			thisCol.width = (CGFloat)[columnWidthNum doubleValue];
+			thisCol.safeResizingMask = saveMask;
 		}
 	}
 }
