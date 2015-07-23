@@ -10,6 +10,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+extern NSString * const RSAutosavingColumnWidthKey;
+extern NSString * const RSAutosavingColumnIndexKey;
 
 @interface NSTableView (RSAutosaving)
 - (NSDictionary *)dictionaryForAutosavingLayout;
