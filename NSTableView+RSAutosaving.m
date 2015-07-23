@@ -15,8 +15,8 @@
 #	define JXZOOMABLE_ENABLED	1
 #endif
 
-NSString *kAutosavedColumnWidthKey = @"AutosavedColumnWidth";
-NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
+NSString * const RSAutosavingColumnWidthKey = @"AutosavedColumnWidth";
+NSString * const RSAutosavingColumnIndexKey = @"AutosavedColumnIndex";
 
 @interface NSDictionary (RSTableViewAutosaving)
 - (NSComparisonResult)compareByAutosavedIndex:(NSDictionary *)otherDict;
@@ -40,12 +40,12 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 #else
 		NSNumber *thisWidth = @(thisCol.width);
 #endif
-		thisColDict[kAutosavedColumnWidthKey] = thisWidth;
+		thisColDict[RSAutosavingColumnWidthKey] = thisWidth;
 		
 		// Save index
 		NSInteger thisColIndex = [self columnWithIdentifier:thisColID];
 		NSNumber *thisIndex = @(thisColIndex);
-		thisColDict[kAutosavedColumnIndexKey] = thisIndex;
+		thisColDict[RSAutosavingColumnIndexKey] = thisIndex;
 		
 		// Add it all to the big dict
 		autoDict[thisColID] = thisColDict;
@@ -67,8 +67,8 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 	NSString *thisIdentifier;
 	for (thisIdentifier in sortedColumnKeys) {
 		NSDictionary *thisColDict = theDict[thisIdentifier];
-		NSNumber *storedIndexNum = thisColDict[kAutosavedColumnIndexKey];
-		NSNumber *columnWidthNum = thisColDict[kAutosavedColumnWidthKey];
+		NSNumber *storedIndexNum = thisColDict[RSAutosavingColumnIndexKey];
+		NSNumber *columnWidthNum = thisColDict[RSAutosavingColumnWidthKey];
 		
 		// Ensure proper column location
 		NSInteger currentIndex = [self columnWithIdentifier:thisIdentifier];
@@ -107,8 +107,8 @@ NSString *kAutosavedColumnIndexKey = @"AutosavedColumnIndex";
 
 - (NSComparisonResult)compareByAutosavedIndex:(NSDictionary *)otherDict
 {
-	NSNumber *myIndex = self[kAutosavedColumnIndexKey];
-	NSNumber *otherIndex = otherDict[kAutosavedColumnIndexKey];
+	NSNumber *myIndex = self[RSAutosavingColumnIndexKey];
+	NSNumber *otherIndex = otherDict[RSAutosavingColumnIndexKey];
 	return [myIndex compare:otherIndex];
 }
 
