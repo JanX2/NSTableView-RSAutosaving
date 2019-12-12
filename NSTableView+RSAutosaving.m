@@ -17,6 +17,8 @@
 
 NSString * const RSAutosavingColumnWidthKey = @"AutosavedColumnWidth";
 NSString * const RSAutosavingColumnIndexKey = @"AutosavedColumnIndex";
+NSString* const RSAutosavingColumnHiddenKey = @"AutosavedColumnHidden";
+
 
 @interface NSDictionary (RSTableViewAutosaving)
 - (NSComparisonResult)compareByAutosavedIndex:(NSDictionary *)otherDict;
@@ -46,6 +48,7 @@ NSString * const RSAutosavingColumnIndexKey = @"AutosavedColumnIndex";
 		NSInteger thisColIndex = [self columnWithIdentifier:thisColID];
 		NSNumber *thisIndex = @(thisColIndex);
 		thisColDict[RSAutosavingColumnIndexKey] = thisIndex;
+		thisColDict[RSAutosavingColumnHiddenKey] = @(thisCol.isHidden);
 		
 		// Add it all to the big dict
 		autoDict[thisColID] = thisColDict;
@@ -93,6 +96,9 @@ NSString * const RSAutosavingColumnIndexKey = @"AutosavedColumnIndex";
 			thisCol.width = (CGFloat)columnWidthNum.doubleValue;
 #endif
 			thisCol.resizingMask = saveMask;
+			
+			if(thisColDict[RSAutosavingColumnHiddenKey])
+				thisCol.hidden = [thisColDict[RSAutosavingColumnHiddenKey] boolValue];
 		}
 	}
 }

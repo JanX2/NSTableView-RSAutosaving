@@ -12,6 +12,7 @@
 
 extern NSString * const RSAutosavingColumnWidthKey;
 extern NSString * const RSAutosavingColumnIndexKey;
+extern NSString* const RSAutosavingColumnHiddenKey;
 
 @interface NSTableView (RSAutosaving)
 - (NSDictionary *)dictionaryForAutosavingLayout;
